@@ -6,3 +6,27 @@
 body {
   margin: 0;
 }
+
+.controls {
+  width: 300px;
+  display: flex;
+}
+
+.control-group {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 10px 20px;
+}
+
+.control-label {
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.control-input {
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
