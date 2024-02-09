@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://github.com/ionathansideras/vitrualAssistand.git",
+  "homepage": "https://github.com/ionathansideras/virtualAssistant.git",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
