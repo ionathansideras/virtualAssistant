@@ -1,73 +1,35 @@
+// Import necessary modules and components
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
+import AudioControl from "./components/AudioControl";
+import { useState } from "react";
 
-import React, { useRef, useEffect, useMemo, useState } from "react";
-
+// Define the App component
 function App() {
-    // Initialize state variables for playAudio and script
+    // Initialize state variables for playAudio, script, and audioTime
+    // playAudio is a boolean indicating whether the audio is playing
+    // script is a string indicating the current script
+    // audioTime is a number indicating the current time of the audio
     const [playAudio, setPlayAudio] = useState(false);
     const [script, setScript] = useState("welcome");
     const [audioTime, setAudioTime] = useState();
 
-    const audio = useMemo(() => new Audio(`/audio/${script}.ogg`), [script]);
-
-    const animationFrameId = useRef();
-
-    useEffect(() => {
-        if (playAudio) {
-            audio.play();
-        } else {
-            audio.pause();
-        }
-
-        if (!playAudio) {
-            setAudioTime();
-        }
-    }, [playAudio, script]);
-
-    // Update audioTime on each animation frame
-    useEffect(() => {
-        const updateTime = () => {
-            setAudioTime(audio.currentTime);
-            animationFrameId.current = requestAnimationFrame(updateTime);
-        };
-
-        if (playAudio) {
-            updateTime();
-        }
-
-        return () => {
-            cancelAnimationFrame(animationFrameId.current);
-        };
-    }, [audio, playAudio]);
-
+    // Render the App component
     return (
         <>
-            <div className="controls">
-                <div className="control-group">
-                    <label className="control-label">Play Audio:</label>
-                    <input
-                        type="checkbox"
-                        checked={playAudio}
-                        onChange={() => setPlayAudio(!playAudio)}
-                        className="control-input"
-                    />
-                </div>
-                <div className="control-group">
-                    <label className="control-label">Script:</label>
-                    <select
-                        value={script}
-                        onChange={(e) => setScript(e.target.value)}
-                        className="control-input"
-                    >
-                        <option value="welcome">Welcome</option>
-                        <option value="joke">Joke</option>
-                        <option value="story">Story</option>
-                    </select>
-                </div>
-            </div>
+            {/* Render the AudioControl component and pass the state variables and setters as props */}
+            <AudioControl
+                playAudio={playAudio}
+                setPlayAudio={setPlayAudio}
+                script={script}
+                setScript={setScript}
+                setAudioTime={setAudioTime}
+            />
+            {/* Render the Canvas component from react-three/fiber */}
             <Canvas shadows camera={{ position: [0, 0, 7], fov: 30 }}>
+                {/* Set the background color of the Canvas */}
                 <color attach="background" args={["#ececec"]} />
+                {/* Render the Experience component and pass the state variables as props */}
                 <Experience
                     playAudio={playAudio}
                     script={script}
@@ -78,4 +40,5 @@ function App() {
     );
 }
 
+// Export the App component as the default export
 export default App;
