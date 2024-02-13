@@ -1,10 +1,12 @@
 import { useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { CORRESPONDING } from "../constants";
+// Import the useSelector and useDispatch hooks from Redux
+import { useSelector} from "react-redux";
 
-export function useLipsync({ nodes, props }) {
-    // Destructure the audioTime and script from the props object.
-    const { audioTime, script } = props;
+export function useLipsync({ nodes }) {
+    // Use the useSelector hook to access the state variables from the Redux store
+    const {audioTime, script} = useSelector((state) => state.audio);
 
     // Use the useLoader hook from the three.js library to load a JSON file.
     const jsonFile = useLoader(THREE.FileLoader, `/audio/${script}.json`);

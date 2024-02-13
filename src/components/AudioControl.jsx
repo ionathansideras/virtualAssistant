@@ -1,8 +1,15 @@
 import React, { useEffect, useMemo } from "react";
+// Import the useSelector and useDispatch hooks from Redux
+import { useSelector, useDispatch } from "react-redux";
+// Import the action creators from the store
+import { setPlayAudio, setScript, setAudioTime } from "../redux/store.js";
 
-export default function AudioControl(props) {
-    // Destructure the props to get the state variables and setters
-    const { playAudio, setPlayAudio, script, setScript, setAudioTime } = props;
+export default function AudioControl() {
+    // Use the useSelector hook to access the state variables from the Redux store
+    const { playAudio, script } = useSelector((state) => state.audio);
+
+    // Use the useDispatch hook to get the dispatch function
+    const dispatch = useDispatch();
 
     // Use the useMemo hook to create a new audio object only when the script changes.
     // This is to avoid creating a new audio object every time the component re-renders,
@@ -29,12 +36,13 @@ export default function AudioControl(props) {
         if (playAudio) {
             audio.play();
             interval = setInterval(() => {
-                setAudioTime(audio.currentTime);
+                // Dispatch the removeCar action with the car's ID as the payload
+                dispatch(setAudioTime(audio.currentTime));
             }, 1000 / 60); // Update approximately 60 times per second
         } else {
             // If playAudio is false, pause the audio and reset the audioTime state variable.
             audio.pause();
-            setAudioTime();
+            dispatch(setAudioTime(0));
         }
 
         // Return a cleanup function to remove the interval and the event listener when
@@ -55,7 +63,7 @@ export default function AudioControl(props) {
                 <input
                     type="checkbox"
                     checked={playAudio}
-                    onChange={() => setPlayAudio(!playAudio)}
+                    onChange={() => dispatch(setPlayAudio(!playAudio))}
                     className="control-input"
                 />
             </div>
@@ -63,7 +71,7 @@ export default function AudioControl(props) {
                 <label className="control-label">Script:</label>
                 <select
                     value={script}
-                    onChange={(e) => setScript(e.target.value)}
+                    onChange={(e) => dispatch(setScript(e.target.value))}
                     className="control-input"
                 >
                     <option value="welcome">Welcome</option>

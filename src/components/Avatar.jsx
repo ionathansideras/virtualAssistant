@@ -12,7 +12,7 @@ export function Avatar(props) {
         "/models/65c6527112681cab213ae13d.glb"
     );
 
-    useLipsync({ nodes, props });
+    useLipsync({ nodes });
 
     return (
         <group {...props} dispose={null}>
